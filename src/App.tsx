@@ -8,6 +8,7 @@ import CourtDetails from './pages/CourtDetails';
 import MyBookings from './pages/MyBookings';
 import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import ForgotPassword from './pages/ForgotPassword';
 
 export function App() {
   return (
@@ -15,6 +16,7 @@ export function App() {
       <AuthProvider>
         <Layout>
           <Routes>
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
