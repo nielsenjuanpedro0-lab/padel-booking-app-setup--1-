@@ -61,11 +61,10 @@ export default function Login() {
                 Contraseña
               </label>
               <div className="text-sm">
-                <Link to="/forgot-password" className="font-semibold text-emerald-500 hover:text-emerald-400">
-  ¿Olvidaste tu contraseña?
-</Link>
-                </a>
-              </div>
+  <Link to="/forgot-password" className="font-semibold text-emerald-500 hover:text-emerald-400">
+    ¿Olvidaste tu contraseña?
+  </Link>
+</div>
             </div>
             <div className="mt-2">
               <input
