@@ -211,29 +211,18 @@ export const api = {
     return axios.put(`${API_URL}/admin/bookings/${bookingId}/confirm`, {}, { headers: { Authorization: `Bearer ${token}` } });
   },
 
-  createPreference: async (token: string, bookingId: number): Promise<{ data: { init_point: string } }> => {
+  createPreference: async (token, bookingId) => {
     if (useMock) {
       return { data: { init_point: 'https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=mock-preference-id' } };
     }
-    return axios.post(`${API_URL}/create-preference`, { bookingId }, { headers: { Authorization: `Bearer ${token}` } });
-<<<<<<< Updated upstream
-  }
-
-
-forgotPassword: async (email: string): Promise<{ data: { success: boolean } }> => {
-=======
+    return axios.post(API_URL + '/create-preference', { bookingId }, { headers: { Authorization: 'Bearer ' + token } });
   },
 
-  forgotPassword: async (email: string): Promise<{ data: { success: boolean } }> => {
->>>>>>> Stashed changes
-    return axios.post(`${API_URL}/auth/forgot-password`, { email });
+  forgotPassword: async (email) => {
+    return axios.post(API_URL + '/auth/forgot-password', { email });
   },
 
-  resetPassword: async (email: string, code: string, newPassword: string): Promise<{ data: { success: boolean } }> => {
-    return axios.post(`${API_URL}/auth/reset-password`, { email, code, newPassword });
+  resetPassword: async (email, code, newPassword) => {
+    return axios.post(API_URL + '/auth/reset-password', { email, code, newPassword });
   },
-<<<<<<< Updated upstream
 };
-=======
-};
->>>>>>> Stashed changes
