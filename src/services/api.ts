@@ -218,4 +218,14 @@ export const api = {
     }
     return axios.post(`${API_URL}/create-preference`, { bookingId }, { headers: { Authorization: `Bearer ${token}` } });
   }
+
+
+forgotPassword: async (email: string): Promise<{ data: { success: boolean } }> => {
+  return axios.post(`${API_URL}/auth/forgot-password`, { email });
+},
+
+resetPassword: async (email: string, code: string, newPassword: string): Promise<{ data: { success: boolean } }> => {
+  return axios.post(`${API_URL}/auth/reset-password`, { email, code, newPassword });
+},
+  
 };
