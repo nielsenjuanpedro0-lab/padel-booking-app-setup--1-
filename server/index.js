@@ -6,6 +6,11 @@ import { MercadoPagoConfig, Preference } from 'mercadopago';
 import db, { initDB } from './db.js';
 import { authenticateToken, isAdmin, JWT_SECRET } from './authMiddleware.js';
 
+import { Resend } from 'resend';
+const resend = new Resend(process.env.RESEND_API_KEY);
+const resetCodes = new Map();
+
+
 const app = express();
 const PORT = 3000;
 
@@ -292,6 +297,56 @@ app.post('/api/webhook', async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+// Forgot Password
+app.post('/api/auth/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  try {
+    const result = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+    const user = result.rows[0];
+    if (!user) return res.status(404).json({ error: 'Email no encontrado' });
+
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    resetCodes.set(email, { code, expires: Date.now() + 15 * 60 * 1000 });
+
+    await resend.emails.send({
+      from: 'Padel App <onboarding@resend.dev>',
+      to: email,
+      subject: 'Código para restablecer tu contraseña',
+      html: `<p>Tu código de verificación es: <strong>${code}</strong></p><p>Expira en 15 minutos.</p>`
+    });
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error al enviar el email' });
+  }
+});
+
+// Reset Password
+app.post('/api/auth/reset-password', async (req, res) => {
+  const { email, code, newPassword } = req.body;
+  
+  if (newPassword.length < 8) {
+    return res.status(400).json({ error: 'La contraseña debe tener al menos 8 caracteres' });
+  }
+
+  const stored = resetCodes.get(email);
+  if (!stored || stored.code !== code || Date.now() > stored.expires) {
+    return res.status(400).json({ error: 'Código inválido o expirado' });
+  }
+
+  try {
+    const hashedPassword = bcrypt.hashSync(newPassword, 10);
+    await db.query('UPDATE users SET password = $1 WHERE email = $2', [hashedPassword, email]);
+    resetCodes.delete(email);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error al actualizar la contraseña' });
+  }
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
