@@ -61,8 +61,9 @@ export default function Login() {
                 Contraseña
               </label>
               <div className="text-sm">
-                <a href="#" className="font-semibold text-emerald-500 hover:text-emerald-400">
-                  ¿Olvidaste tu contraseña?
+                <Link to="/forgot-password" className="font-semibold text-emerald-500 hover:text-emerald-400">
+  ¿Olvidaste tu contraseña?
+</Link>
                 </a>
               </div>
             </div>
