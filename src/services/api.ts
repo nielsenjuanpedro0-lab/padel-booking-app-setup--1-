@@ -221,11 +221,10 @@ export const api = {
 
 
 forgotPassword: async (email: string): Promise<{ data: { success: boolean } }> => {
- return axios.post(`${API_URL}/auth/forgot-password`, { email });
-},
+    return axios.post(`${API_URL}/auth/forgot-password`, { email });
+  },
 
-resetPassword: async (email: string, code: string, newPassword: string): Promise<{ data: { success: boolean } }> => {
-  return axios.post(`${API_URL}/auth/reset-password`, { email, code, newPassword });
-},
-  
+  resetPassword: async (email: string, code: string, newPassword: string): Promise<{ data: { success: boolean } }> => {
+    return axios.post(`${API_URL}/auth/reset-password`, { email, code, newPassword });
+  },
 };
