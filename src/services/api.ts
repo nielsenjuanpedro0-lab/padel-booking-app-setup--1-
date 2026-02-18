@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://padel-booking-app-setup-1.onrender.com/api';
 
 // Types
 export interface User {
@@ -78,7 +78,7 @@ const mockCourts: Court[] = [
   },
 ];
 
-let useMock = true; // Default to true for demo purposes
+let useMock = false; // Default to true for demo purposes
 
 export const setUseMock = (val: boolean) => {
   useMock = val;
